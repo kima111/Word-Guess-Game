@@ -5,35 +5,105 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <link rel="stylesheet" href="assets/css/reset.css">
+
+    
+    <link href="https://fonts.googleapis.com/css?family=Teko&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <pre>
+##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=        
+  _    _               _   _____                     _               _____                      
+ | |  | |             | | |  __ \                   (_)             |  __ \                     
+ | |  | | ___  _ __ __| | | |  \/_   _  ___  ___ ___ _ _ __   __ _  | |  \/ __ _ _ __ ___   ___ 
+ | |/\| |/ _ \| '__/ _` | | | __| | | |/ _ \/ __/ __| | '_ \ / _` | | | __ / _` | '_ ` _ \ / _ \
+ \  /\  / (_) | | | (_| | | |_\ \ |_| |  __/\__ \__ \ | | | | (_| | | |_\ \ (_| | | | | | |  __/
+  \/  \/ \___/|_|  \__,_|  \____/\__,_|\___||___/___/_|_| |_|\__, |  \____/\__,_|_| |_| |_|\___|
+                                                              __/ |                             
+                                                             |___/                    by kima111              
+##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=
+            </pre>
+        </div>
+    </div>
+<div class="row">
+    <div class="col-12">
+            <button id="song"><span class="fa fa-music"></span> Play Song </button> <button id="songStop"><span class="fa fa-pause"></span> Pause Song</button><img height="200px" src="assets/images/kitty.gif">
+    </div>
+</div>
 
-    <h1>Word Guessing Game</h1>
-    <hr>
-    <p>Wins: <text id = "wins">0</text></p>
-    <p>Loses: <text id = "loses">0</text></p>
+<pre>
+##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=
+</pre>
+<div class="row">
+    <div class="col-12">
+        <p>Wins: <text id = "wins">0</text></p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <p>Loses: <text id = "loses">0</text></p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <p>Guess this word: <text id="guessing"></text></p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <p>Your Guesses So Far: <text id = "guesses"></text></p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <p>Your Guesses Left: <text id = "guessesLeft">10</text></p>
+        <pre>
+##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=
+        </pre>
+    </div>
+</div>
+</div>
 
-    <p id = "guessing">Guess this word:</p>
-    <p>Your Guesses So Far: <text id = "guesses"></text></p>
-    <p>Your Guesses Left: <text id = "guessesLeft">10</text></p>
 
+</div>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+    
+     $(document).ready(function() {
+    var audioElement = document.createElement("audio");
+    audioElement.setAttribute("src", "assets/soundtrack/Electronic.wav");
     
 
 
 
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script>
 
-     $(document).ready(function() {
+    
+    $("#song").on("click", function() {
+      audioElement.play();
+      audioElement.loop = true;
+    });
+    $("#songStop").on("click", function() {
+      audioElement.pause();
+    });
+ 
+    
+
     var Wins = 0;
     var Loses = 0;
     newGame();
 
     
     function newGame(){
-
+       
         $('#guessing').empty();
-        $("#guessesLeft").empty();
+        $("#guessesLeft").text(10);
         $("#guesses").empty();
 
         var letter = "";
@@ -50,12 +120,17 @@
 
         document.onkeyup = function(event) {
             var letter = event.key.toLowerCase();
-            guessBoolean = false;
-            alreadyGuessed = false;
-            
+         
+            for(j=0; j<guessedLetters.length; j++){
+              
+              if(guessedLetters[j] == letter){
+                  alreadyGuessed = true;
+              }
+   
+          }
             
             for(i=0; i<words[randomNum].length; i++){
-                if(words[randomNum][i]==letter){
+                if(words[randomNum][i]==letter && alreadyGuessed == false){
                     $("."+letter)
                     .text(letter);
                     guessBoolean = true;
@@ -65,13 +140,7 @@
             
             }
 
-            for(j=0; j<guessedLetters.length; j++){
-              
-                if(guessedLetters[j] == letter){
-                    alreadyGuessed = true;
-                }
-     
-            }
+           
 
             guessedLetters.push(letter);
             
@@ -98,7 +167,8 @@
             $("#wins").text(Wins); 
             $("#loses").text(Loses); 
             
-           
+            guessBoolean = false;
+            alreadyGuessed = false;
            
         }
    
@@ -124,5 +194,9 @@
         
      });
     </script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  
 </body>
 </html>
