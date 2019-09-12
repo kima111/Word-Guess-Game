@@ -79,12 +79,7 @@
      $(document).ready(function() {
     var audioElement = document.createElement("audio");
     audioElement.setAttribute("src", "assets/soundtrack/Electronic.wav");
-    
 
-
-
-
-    
     $("#song").on("click", function() {
       audioElement.play();
       audioElement.loop = true;
@@ -92,14 +87,12 @@
     $("#songStop").on("click", function() {
       audioElement.pause();
     });
- 
-    
 
     var Wins = 0;
     var Loses = 0;
+
     newGame();
 
-    
     function newGame(){
        
         $('#guessing').empty();
@@ -139,8 +132,6 @@
                
             
             }
-
-           
 
             guessedLetters.push(letter);
             
@@ -186,7 +177,6 @@
        
         console.log(words[randomNum]);
         
-
     }
  
     
