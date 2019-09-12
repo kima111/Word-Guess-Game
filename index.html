@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+    <h1>Word Guessing Game</h1>
+    <p>Wins: <text id = "wins">0</text></p></br>
+
+    <p id = "guessing">Guess this word:</p>
+    <p id = "guesses">Your Guesses So Far: </p>
+    <p>Your Guesses Left: <text id = "guessesLeft">10</text></p>
+
+
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+     $(document).ready(function() {
+
+        var letter = "";
+        var words = ["apple", "cat", "judge", "dinosaur", "people", "angel", "amazing", "forest", "blue", "river", "basket", "candle", "drums", "orange", "pizza", "carpet", "automobile", "television", "kangaroo", "tennis", "washington", "violin", "computer", "robot", "hamburger", "table", "toddler"];
+        var randomNum = Math.floor(Math.random()*25);
+        var guessingDiv = document.getElementById("guessing")
+        var guesses = "";
+        var guessesNum = 10;
+        var guessBoolean = false;
+        var alreadyGuessed = false;
+        var guessedLetters = [];
+        var soFarGuessedWord = [];
+
+        document.onkeyup = function(event) {
+            var letter = event.key.toLowerCase();
+            guessBoolean = false;
+            alreadyGuessed = false;
+            
+            
+            for(i=0; i<words[randomNum].length; i++){
+                if(words[randomNum][i]==letter){
+                    $("."+letter)
+                    .text(letter);
+                    guessBoolean = true;
+                    soFarGuessedWord.push($("."+letter).text());
+                }
+               
+            
+            }
+
+            for(j=0; j<guessedLetters.length; j++){
+              
+                if(guessedLetters[j] == letter){
+                    alreadyGuessed = true;
+                }
+     
+            }
+
+            guessedLetters.push(letter);
+            
+            if(guessBoolean == false && alreadyGuessed == false){
+            guessesNum = guessesNum - 1;
+            }
+            if(alreadyGuessed==false){
+            $("#guesses")
+            .append(letter);
+            }
+            $("#guessesLeft")
+            .text(guessesNum);       
+            console.log(soFarGuessedWord);       
+        }
+        
+        for(j = 0;  j< words[randomNum].length; j++){
+          
+            var placeholder = $("<text>");
+                placeholder.addClass(words[randomNum][j]);
+                placeholder.attr('id',words[randomNum][j]);
+                placeholder.attr("data-letter", words[randomNum][j]);
+                placeholder.text(" _");
+                $('#guessing').append(placeholder);
+
+        }
+            
+        console.log(words[randomNum]);
+        
+     });
+    </script>
+</body>
+</html>
