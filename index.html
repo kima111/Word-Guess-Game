@@ -9,17 +9,32 @@
 <body>
 
     <h1>Word Guessing Game</h1>
-    <p>Wins: <text id = "wins">0</text></p></br>
+    <hr>
+    <p>Wins: <text id = "wins">0</text></p>
+    <p>Loses: <text id = "loses">0</text></p>
 
     <p id = "guessing">Guess this word:</p>
-    <p id = "guesses">Your Guesses So Far: </p>
+    <p>Your Guesses So Far: <text id = "guesses"></text></p>
     <p>Your Guesses Left: <text id = "guessesLeft">10</text></p>
+
+    
 
 
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script>
+
      $(document).ready(function() {
+    var Wins = 0;
+    var Loses = 0;
+    newGame();
+
+    
+    function newGame(){
+
+        $('#guessing').empty();
+        $("#guessesLeft").empty();
+        $("#guesses").empty();
 
         var letter = "";
         var words = ["apple", "cat", "judge", "dinosaur", "people", "angel", "amazing", "forest", "blue", "river", "basket", "candle", "drums", "orange", "pizza", "carpet", "automobile", "television", "kangaroo", "tennis", "washington", "violin", "computer", "robot", "hamburger", "table", "toddler"];
@@ -30,7 +45,8 @@
         var guessBoolean = false;
         var alreadyGuessed = false;
         var guessedLetters = [];
-        var soFarGuessedWord = [];
+        var correctLettersNum = 0;
+        
 
         document.onkeyup = function(event) {
             var letter = event.key.toLowerCase();
@@ -43,7 +59,7 @@
                     $("."+letter)
                     .text(letter);
                     guessBoolean = true;
-                    soFarGuessedWord.push($("."+letter).text());
+                    correctLettersNum = correctLettersNum + 1;
                 }
                
             
@@ -67,10 +83,25 @@
             .append(letter);
             }
             $("#guessesLeft")
-            .text(guessesNum);       
-            console.log(soFarGuessedWord);       
+            .text(guessesNum);
+
+            if(correctLettersNum == words[randomNum].length){
+                Wins = Wins + 1;
+                newGame();
+            }
+            if(guessesNum==0){
+                Loses = Loses + 1;
+                newGame();
+            }
+            console.log(correctLettersNum);  
+            console.log(Wins); 
+            $("#wins").text(Wins); 
+            $("#loses").text(Loses); 
+            
+           
+           
         }
-        
+   
         for(j = 0;  j< words[randomNum].length; j++){
           
             var placeholder = $("<text>");
@@ -79,10 +110,17 @@
                 placeholder.attr("data-letter", words[randomNum][j]);
                 placeholder.text(" _");
                 $('#guessing').append(placeholder);
+                
 
         }
-            
+       
         console.log(words[randomNum]);
+        
+
+    }
+ 
+    
+ 
         
      });
     </script>
