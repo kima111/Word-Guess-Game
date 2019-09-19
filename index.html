@@ -9,7 +9,6 @@
 
     
     <link href="https://fonts.googleapis.com/css?family=Teko&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -17,18 +16,13 @@
 <div class="container">
     <div class="row">
         <div class="col-12">
-            <pre>
+     
+
 ##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=        
-  _    _               _   _____                     _               _____                      
- | |  | |             | | |  __ \                   (_)             |  __ \                     
- | |  | | ___  _ __ __| | | |  \/_   _  ___  ___ ___ _ _ __   __ _  | |  \/ __ _ _ __ ___   ___ 
- | |/\| |/ _ \| '__/ _` | | | __| | | |/ _ \/ __/ __| | '_ \ / _` | | | __ / _` | '_ ` _ \ / _ \
- \  /\  / (_) | | | (_| | | |_\ \ |_| |  __/\__ \__ \ | | | | (_| | | |_\ \ (_| | | | | | |  __/
-  \/  \/ \___/|_|  \__,_|  \____/\__,_|\___||___/___/_|_| |_|\__, |  \____/\__,_|_| |_| |_|\___|
-                                                              __/ |                             
-                                                             |___/                    by kima111              
+<h1>WORD GUESSING GAME</h1>            <h3>by kima111</h3>              
 ##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=##=
-            </pre>
+            
+
         </div>
     </div>
 <div class="row">
@@ -73,20 +67,23 @@
 
 </div>
 
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script>
-    
-     $(document).ready(function() {
+
     var audioElement = document.createElement("audio");
     audioElement.setAttribute("src", "assets/soundtrack/Electronic.wav");
+    document.getElementById("song").onclick = function() {playSong()};
+    
+  
+    function playSong(){
+        audioElement.play();
+        audioElement.loop = true;
+    }
 
-    $("#song").on("click", function() {
-      audioElement.play();
-      audioElement.loop = true;
-    });
-    $("#songStop").on("click", function() {
+    document.getElementById("songStop").onclick = function(){pauseSong()};
+
+    function pauseSong(){
       audioElement.pause();
-    });
+    };
 
     var Wins = 0;
     var Loses = 0;
@@ -95,9 +92,17 @@
 
     function newGame(){
        
-        $('#guessing').empty();
-        $("#guessesLeft").text(10);
-        $("#guesses").empty();
+
+        var guessing = document.getElementById("guessing");
+        var guessesLeft = document.getElementById("guessesLeft");
+        var guesses = document.getElementById("guesses");
+            while (guessing.firstChild){
+                guessing.removeChild(guessing.firstChild);
+            }
+            while (guesses.firstChild){
+                guesses.removeChild(guesses.firstChild);
+            }
+        guessesLeft.text = 10;
 
         var letter = "";
         var words = ["apple", "cat", "judge", "dinosaur", "people", "angel", "amazing", "forest", "blue", "river", "basket", "candle", "drums", "orange", "pizza", "carpet", "automobile", "television", "kangaroo", "tennis", "washington", "violin", "computer", "robot", "hamburger", "table", "toddler"];
@@ -113,38 +118,41 @@
 
         document.onkeyup = function(event) {
             var letter = event.key.toLowerCase();
-         
+
             for(j=0; j<guessedLetters.length; j++){
-              
               if(guessedLetters[j] == letter){
                   alreadyGuessed = true;
               }
    
-          }
-            
+            }
+
+            for(k=0; k<words[randomNum].length; k++){
+                if(words[randomNum][k]==letter){
+                    var selectedSpace = document.getElementById(letter + k);
+                    selectedSpace.textContent = letter;
+                }
+            }
+
             for(i=0; i<words[randomNum].length; i++){
+                
                 if(words[randomNum][i]==letter && alreadyGuessed == false){
-                    $("."+letter)
-                    .text(letter);
+  
                     guessBoolean = true;
                     correctLettersNum = correctLettersNum + 1;
                 }
-               
-            
             }
 
             guessedLetters.push(letter);
             
             if(guessBoolean == false && alreadyGuessed == false){
-            guessesNum = guessesNum - 1;
+                guessesNum = guessesNum - 1;
             }
             if(alreadyGuessed==false){
-            $("#guesses")
-            .append(letter);
+                document.getElementById("guesses").append(letter);
             }
-            $("#guessesLeft")
-            .text(guessesNum);
 
+                document.getElementById("guessesLeft").textContent = guessesNum;
+       
             if(correctLettersNum == words[randomNum].length){
                 Wins = Wins + 1;
                 newGame();
@@ -153,36 +161,31 @@
                 Loses = Loses + 1;
                 newGame();
             }
-            console.log(correctLettersNum);  
-            console.log(Wins); 
-            $("#wins").text(Wins); 
-            $("#loses").text(Loses); 
-            
+        
+            var winText = document.getElementById("wins");
+            winText.textContent = Wins;
+
+            var losesText = document.getElementById("loses");
+            losesText.textContent = Loses;
+
             guessBoolean = false;
             alreadyGuessed = false;
-           
         }
    
         for(j = 0;  j< words[randomNum].length; j++){
-          
-            var placeholder = $("<text>");
-                placeholder.addClass(words[randomNum][j]);
-                placeholder.attr('id',words[randomNum][j]);
-                placeholder.attr("data-letter", words[randomNum][j]);
-                placeholder.text(" _");
-                $('#guessing').append(placeholder);
-                
 
+            var placeholder = document.createElement("text");
+            placeholder.classList.add(words[randomNum][j]);
+            placeholder.setAttribute('id',(words[randomNum][j] + j));
+            placeholder.setAttribute("data-letter", words[randomNum][j]);
+            placeholder.textContent = " _";
+            document.getElementById("guessing").append(placeholder);
         }
-       
+ 
         console.log(words[randomNum]);
         
     }
  
-    
- 
-        
-     });
     </script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>

@@ -12,6 +12,11 @@ h1{
     font-size: 50px;
     font-family: 'Teko', sans-serif;
 }
+h3{
+    color: green;
+    font-size: 12px;
+    font-family: 'Teko', sans-serif;
+}
 pre{
     color: green;
 }
